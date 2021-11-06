@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 const TopAlbumsStack = () => {
   return (
-    <Stack.Navigator initialRouteName="top-albums">
+    <Stack.Navigator>
       <Stack.Screen
         name="top-albums"
         component={TopAlbums}

@@ -14,17 +14,33 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="top-albums"
+        initialRouteName="top-albums-stack"
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarActiveTintColor: '#00a680',
           tabBarInactiveTintColor: '#646464',
           tabBarIcon: ({color}) => screenOptions(route, color),
         })}>
-        <Tab.Navigator name="top-albums" component={TopAlbumsStack} />
-        <Tab.Navigator name="account" component={AccountStack} />
-        <Tab.Navigator name="favorites" component={FavoritesStack} />
-        <Tab.Navigator name="adv-search" component={SearchStack} />
+        <Tab.Screen
+          name="adv-search-stack"
+          component={SearchStack}
+          options={{title: 'Search'}}
+        />
+        <Tab.Screen
+          name="top-albums-stack"
+          component={TopAlbumsStack}
+          options={{title: 'Top 100'}}
+        />
+        <Tab.Screen
+          name="account-stack"
+          component={AccountStack}
+          options={{title: 'My Profile'}}
+        />
+        <Tab.Screen
+          name="favorites-stack"
+          component={FavoritesStack}
+          options={{title: 'My Favorites'}}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -34,8 +50,24 @@ export default Navigation;
 
 const screenOptions = (route, color) => {
   let iconName;
-  let iconType;
+  let iconType; //currently available: evilicon, material, material-community
   switch (route.name) {
+    case 'adv-search-stack':
+      iconName = 'search';
+      iconType = 'material';
+      break;
+    case 'top-albums-stack':
+      iconName = 'trophy';
+      iconType = 'evilicon';
+      break;
+    case 'account-stack':
+      iconName = 'home-outline';
+      iconType = 'material-community';
+      break;
+    case 'favorites-stack':
+      iconName = 'heart-outline';
+      iconType = 'material-community';
+      break;
     default:
       iconName = 'alert-decagram';
       iconType = 'material-community';
