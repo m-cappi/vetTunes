@@ -2,8 +2,15 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Accessory} from 'react-native-elements';
 
+import requestStoragePermission from '../../utils/permissions/requestStoragePermission';
+
 const UserInfo = ({toastRef, userInfo: {photoURL, displayName, email}}) => {
-  const changeAvatar = () => {};
+  const changeAvatar = async () => {
+    const userResponse = await requestStoragePermission();
+    if (userResponse === 'GRANTED') {
+      console.log('Access media library');
+    }
+  };
   return (
     <View style={styles.viewUserInfo}>
       <Avatar
