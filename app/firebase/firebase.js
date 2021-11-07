@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/storage';
 
 import firebaseConfig from './config';
 
@@ -11,6 +12,7 @@ class Firebase {
     }
     this.db = app.firestore();
     this.auth = app.auth();
+    this.storage = app.storage();
   }
 }
 

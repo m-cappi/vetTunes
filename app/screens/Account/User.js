@@ -28,7 +28,7 @@ const User = () => {
     <View style={styles.viewUserInfo}>
       {userInfo && (
         <>
-          <UserInfo toastRef={toastRef} userInfo={userInfo} />
+          <UserInfo toastRef={toastRef} userInfo={userInfo} setIsLoading={setIsLoading}/>
         </>
       )}
       <Button

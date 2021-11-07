@@ -1,8 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {View, Text} from 'react-native';
 
-// import firebase from 'firebase';
-// import {firebaseApp} from '../../utils/db';
 import {FirebaseContext} from '../../firebase';
 
 import Loading from '../../components/Loading';

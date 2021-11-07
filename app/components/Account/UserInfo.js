@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Accessory} from 'react-native-elements';
 import {launchImageLibrary} from 'react-native-image-picker';
 
+import {FirebaseContext} from '../../firebase';
 import requestStoragePermission from '../../utils/permissions/requestStoragePermission';
 
-const UserInfo = ({toastRef, userInfo: {photoURL, displayName, email}}) => {
+const UserInfo = ({
+  toastRef,
+  setIsLoading,
+  userInfo: {photoURL, displayName, email, uid},
+}) => {
+  const firebase = useContext(FirebaseContext);
+
   const changeAvatar = async () => {
     const userResponse = await requestStoragePermission();
     if (userResponse === 'GRANTED') {
@@ -19,10 +26,25 @@ const UserInfo = ({toastRef, userInfo: {photoURL, displayName, email}}) => {
           'There was an error accessing your media library',
         );
       } else {
-        console.log('Upload image');
+        setIsLoading(true);
+        uploadImage(res.uri)
+          .then(() => console.log('update photo url'))
+          .catch(() => {
+            toastRef.current.show(
+              "There's been an error while handling your request",
+            );
+          })
+          .finally(() => setIsLoading(false));
       }
     }
   };
+
+  const uploadImage = async uri => {
+    const res = await fetch(uri);
+    const blob = await res.blob();
+    return firebase.storage.ref().child(`avatar/${uid}`).put(blob);
+  };
+
   return (
     <View style={styles.viewUserInfo}>
       <Avatar
