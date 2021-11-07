@@ -9,6 +9,7 @@ import requestStoragePermission from '../../utils/permissions/requestStoragePerm
 const UserInfo = ({
   toastRef,
   setIsLoading,
+  setReloadUser,
   userInfo: {photoURL, displayName, email, uid},
 }) => {
   const firebase = useContext(FirebaseContext);
@@ -28,7 +29,7 @@ const UserInfo = ({
       } else {
         setIsLoading(true);
         uploadImage(res.uri)
-          .then(() => console.log('update photo url'))
+          .then(() => updatePhotoUrl())
           .catch(() => {
             toastRef.current.show(
               "There's been an error while handling your request",
@@ -43,6 +44,22 @@ const UserInfo = ({
     const res = await fetch(uri);
     const blob = await res.blob();
     return firebase.storage.ref().child(`avatar/${uid}`).put(blob);
+  };
+
+  const updatePhotoUrl = () => {
+    firebase.storage
+      .ref(`/${uid}`)
+      .getDownloadURL()
+      .then(async res => {
+        const update = {photoURL: res};
+        await firebase.auth.currentUser.updateProfile(update);
+        setReloadUser(current => !current);
+      })
+      .catch(() => {
+        toastRef.current.show(
+          "There's been an error while updating your account",
+        );
+      });
   };
 
   return (
