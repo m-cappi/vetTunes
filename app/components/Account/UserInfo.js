@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Avatar, Accessory} from 'react-native-elements';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import requestStoragePermission from '../../utils/permissions/requestStoragePermission';
 
@@ -8,7 +9,18 @@ const UserInfo = ({toastRef, userInfo: {photoURL, displayName, email}}) => {
   const changeAvatar = async () => {
     const userResponse = await requestStoragePermission();
     if (userResponse === 'GRANTED') {
-      console.log('Access media library');
+      const res = await launchImageLibrary({
+        mediaType: 'photo',
+        maxHeight: 480,
+        maxWidth: 852,
+      });
+      if (res.errorCode) {
+        toastRef.current.show(
+          'There was an error accessing your media library',
+        );
+      } else {
+        console.log('Upload image');
+      }
     }
   };
   return (
