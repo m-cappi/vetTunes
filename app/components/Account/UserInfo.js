@@ -9,6 +9,7 @@ import requestStoragePermission from '../../utils/permissions/requestStoragePerm
 const UserInfo = ({
   toastRef,
   setIsLoading,
+  setLoadingInfo,
   setReloadUser,
   userInfo: {photoURL, displayName, email, uid},
 }) => {
@@ -26,7 +27,8 @@ const UserInfo = ({
         toastRef.current.show(
           'There was an error accessing your media library',
         );
-      } else {
+      } else if (!res.didCancel) {
+        setLoadingInfo('Updating your avatar');
         setIsLoading(true);
         uploadImage(res.uri)
           .then(() => updatePhotoUrl())
@@ -36,6 +38,8 @@ const UserInfo = ({
             );
           })
           .finally(() => setIsLoading(false));
+      } else {
+        console.log(res);
       }
     }
   };

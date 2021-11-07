@@ -2,9 +2,12 @@ import React, {useEffect, useRef, useState, useContext} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button} from 'react-native-elements';
 import Toast from 'react-native-easy-toast';
+
 import {FirebaseContext} from '../../firebase';
 import Loading from '../../components/Loading';
 import UserInfo from '../../components/Account/UserInfo';
+import AccountOptions from '../../components/Account/AccountOptions';
+import colors from '../../styles/palette';
 
 const User = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -22,7 +25,7 @@ const User = () => {
       setUserInfo(user);
     })();
     //setReloadUser((current)=>!current);
-  }, [reloadUser]);
+  }, [reloadUser]); //FIXME: try firebase.auth.currentUser instead
 
   return (
     <View style={styles.viewUserInfo}>
@@ -33,7 +36,9 @@ const User = () => {
             userInfo={userInfo}
             setIsLoading={setIsLoading}
             setReloadUser={setReloadUser}
+            setLoadingInfo={setLoadingInfo}
           />
+          <AccountOptions />
         </>
       )}
       <Button
@@ -62,5 +67,5 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
-  btnLogoutText: {color: '#00a680'},
+  btnLogoutText: {color: colors.light1},
 });
