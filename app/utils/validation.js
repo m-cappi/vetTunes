@@ -23,3 +23,11 @@ export const SignupSchema = yup.object().shape({
 export const SigninSchema = yup
   .object()
   .shape({email: emailRule, password: passwordRule});
+
+export const UpdatePasswordSchema = yup
+  .object()
+  .shape({
+    password: passwordRule,
+    newPassword: passwordRule,
+    newConfirmationPassword: confirmationPasswordRule,
+  });
