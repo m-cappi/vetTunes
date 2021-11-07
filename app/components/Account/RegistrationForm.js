@@ -113,7 +113,7 @@ const RegistrationForm = ({toastRef}) => {
               </View>
             )}
             <Button
-              title="Submit"
+              title="Register!"
               containerStyle={styles.btnContainerRegister}
               buttonStyle={styles.btnRegister}
               onPress={handleSubmit}

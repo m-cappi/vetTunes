@@ -7,16 +7,43 @@ import {FirebaseContext} from '../../firebase';
 import colors from '../../styles/palette';
 import {SigninSchema} from '../../utils/validation';
 
-const EmailChangeForm = () => {
+const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const {firebase} = useContext(FirebaseContext);
 
   const updateEmail = values => {
-    console.log(values);
+    if (email === values.email) {
+      toastRef.current.show("Email hasn't changed!", 3000);
+      return;
+    }
+    setIsLoading(true);
+    firebase
+      .reauthenticate(values.password)
+      .then(res => {
+        firebase.auth.currentUser
+          .updateEmail(values.email)
+          .then(() => {
+            toastRef.current.show('Email update successful!');
+            setReloadUser(current => !current);
+            setShowModal(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toastRef.current.show(
+              "There's been an error updating your email",
+              5000,
+            );
+          });
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toastRef.current.show('Invalid password!', 5000);
+      });
   };
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      initialValues={{email: email, password: ''}}
       validationSchema={SigninSchema}
       onSubmit={values => updateEmail(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
@@ -69,6 +96,7 @@ const EmailChangeForm = () => {
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}
+            loading={isLoading}
           />
         </View>
       )}
