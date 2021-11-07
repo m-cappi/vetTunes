@@ -14,6 +14,15 @@ class Firebase {
     this.auth = app.auth();
     this.storage = app.storage();
   }
+
+  reauthenticate(password) {
+    const user = this.auth.currentUser;
+    const credentials = this.auth.EmailAuthProvider.credential(
+      user.email,
+      password,
+    );
+    return user.reauthenticateWithCredential(credentials);
+  }
 }
 
 const firebase = new Firebase();
