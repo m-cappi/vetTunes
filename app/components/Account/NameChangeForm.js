@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Input, Button, Icon} from 'react-native-elements';
 import {Formik} from 'formik';
@@ -7,16 +7,41 @@ import {FirebaseContext} from '../../firebase';
 import colors from '../../styles/palette';
 import {NameChangeSchema} from '../../utils/validation';
 
-const NameChangeForm = () => {
+const NameChangeForm = ({
+  displayName,
+  setShowModal,
+  setReloadUser,
+  toastRef,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const {firebase} = useContext(FirebaseContext);
 
   const updateName = values => {
-    console.log(values);
+    if (displayName === values.displayName) {
+      toastRef.current.show("Your name hasn't changed!");
+      return;
+    }
+    setIsLoading(true);
+    const update = {displayName: values.displayName};
+    firebase
+      .updateProfile(update)
+      .then(() => {
+        setReloadUser(current => !current);
+        setShowModal(false);
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.warn('@updateName.catch: ', err);
+        toastRef.current.show(
+          "There's been an error updating your account",
+          5000,
+        );
+      });
   };
   return (
     <Formik
       initialValues={{
-        displayName: '',
+        displayName: displayName || 'Anonymous',
       }}
       validationSchema={NameChangeSchema}
       onSubmit={values => updateName(values)}>
@@ -46,6 +71,7 @@ const NameChangeForm = () => {
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}
+            loading={isLoading}
           />
         </View>
       )}

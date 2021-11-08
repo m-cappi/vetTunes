@@ -23,10 +23,15 @@ class Firebase {
     );
     return user.reauthenticateWithCredential(credentials);
   }
+
   updateEmail(password, email) {
     return this.reauthenticate(password).then(() =>
       this.auth.currentUser.updateEmail(email),
     );
+  }
+
+  updateProfile(payload) {
+    return this.auth.currentUser.updateProfile(payload);
   }
 }
 
