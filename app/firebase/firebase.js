@@ -17,11 +17,16 @@ class Firebase {
 
   reauthenticate(password) {
     const user = this.auth.currentUser;
-    const credentials = this.auth.EmailAuthProvider.credential(
+    const credentials = app.auth.EmailAuthProvider.credential(
       user.email,
       password,
     );
     return user.reauthenticateWithCredential(credentials);
+  }
+  updateEmail(password, email) {
+    return this.reauthenticate(password).then(() =>
+      this.auth.currentUser.updateEmail(email),
+    );
   }
 }
 

@@ -19,26 +19,21 @@ const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
     }
     setIsLoading(true);
     firebase
-      .reauthenticate(values.password)
-      .then(res => {
-        firebase.auth.currentUser
-          .updateEmail(values.email)
-          .then(() => {
-            toastRef.current.show('Email update successful!');
-            setReloadUser(current => !current);
-            setShowModal(false);
-          })
-          .catch(() => {
-            setIsLoading(false);
-            toastRef.current.show(
-              "There's been an error updating your email",
-              5000,
-            );
-          });
+      .updateEmail(values.password, values.email)
+      .then(() => {
+        toastRef.current.show('Email update successful!');
+        setReloadUser(current => !current);
+        setShowModal(false);
       })
-      .catch(() => {
+      .catch(err => {
+        console.warn('@updateEmail.catch: ',err);
+        toastRef.current.show(
+          "There's been an error updating your email",
+          5000,
+        );
+      })
+      .finally(() => {
         setIsLoading(false);
-        toastRef.current.show('Invalid password!', 5000);
       });
   };
   return (

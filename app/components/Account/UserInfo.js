@@ -26,7 +26,7 @@ const UserInfo = ({
         },
         res => {
           if (res.errorCode) {
-            console.warn(res);
+            console.warn('@changeAvatar>launchImageLibrary.errorCode: ',res);
             toastRef.current.show(
               'There was an error accessing your media library',
               3000,
@@ -57,7 +57,6 @@ const UserInfo = ({
   };
 
   const updatePhotoUrl = () => {
-    console.log('At updatePhotoUrl');
     return firebase.storage
       .ref(`avatar/${uid}`)
       .getDownloadURL()

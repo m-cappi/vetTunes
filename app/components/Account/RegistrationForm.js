@@ -16,11 +16,9 @@ const RegistrationForm = ({toastRef}) => {
   const navigation = useNavigation();
   const register = values => {
     setIsLoading(true);
-    console.log(values);
     firebase.auth
       .createUserWithEmailAndPassword(values.email, values.password)
       .then(() => {
-        //setIsLoading(false);
         navigation.navigate('account');
       })
       .catch(() => {

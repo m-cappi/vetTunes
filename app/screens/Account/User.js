@@ -24,8 +24,7 @@ const User = () => {
       const user = await firebase.auth.currentUser;
       setUserInfo(user);
     })();
-    //setReloadUser((current)=>!current);
-  }, [reloadUser]); //FIXME: try firebase.auth.currentUser instead
+  }, [reloadUser]);
 
   return (
     <View style={styles.viewUserInfo}>
