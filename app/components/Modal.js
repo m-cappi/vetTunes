@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import {Overlay} from 'react-native-elements';
 
 const Modal = ({isVisible, setIsVisible, children}) => {
-  const toggleModal = () => setIsVisible(actual => !actual);
+  const toggleModal = () => setIsVisible(current => !current);
   return (
     <Overlay
       isVisible={isVisible}
@@ -19,6 +19,11 @@ const Modal = ({isVisible, setIsVisible, children}) => {
 export default Modal;
 
 const styles = StyleSheet.create({
-  overlay: {backgroundColor: '#fff', height: '90%', width: '90%'},
+  overlay: {
+    backgroundColor: '#fff',
+    minHeight: '70%',
+    height: 'auto',
+    width: '90%',
+  },
   backdrop: {backgroundColor: 'rgba(0,0,0,0.5)'},
 });

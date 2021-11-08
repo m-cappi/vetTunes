@@ -109,7 +109,7 @@ const PasswordChangeForm = ({setShowModal, toastRef}) => {
               <Error error={errors.newConfirmationPassword} />
             )}
           <Button
-            title="Submit"
+            title="Update Password"
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}

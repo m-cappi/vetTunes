@@ -82,7 +82,7 @@ const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
             <Error error={errors.password} />
           )}
           <Button
-            title="Submit"
+            title="Update Email"
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}

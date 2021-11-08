@@ -67,7 +67,7 @@ const NameChangeForm = ({
             <Error error={errors.displayName} />
           )}
           <Button
-            title="Submit"
+            title="Update Name"
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}
