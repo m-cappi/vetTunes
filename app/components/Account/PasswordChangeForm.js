@@ -1,18 +1,33 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Input, Button, Icon} from 'react-native-elements';
 import {Formik} from 'formik';
 
 import {FirebaseContext} from '../../firebase';
 import colors from '../../styles/palette';
 import {UpdatePasswordSchema} from '../../utils/validation';
+import Error from '../Error';
 
-const PasswordChangeForm = () => {
+const PasswordChangeForm = ({setShowModal, toastRef}) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const {firebase} = useContext(FirebaseContext);
 
   const updatePassword = values => {
-    console.log(values);
+    setIsLoading(true);
+    firebase
+      .updatePassword(values.password, values.newPassword)
+      .then(() => {
+        toastRef.current.show('Password updated successfully!');
+        setShowModal(false);
+        firebase.auth.signOut();
+      })
+      .catch(err => {
+        setIsLoading(false);
+        console.warn(err);
+        setError("There's been an error updating your password");
+      });
   };
   return (
     <Formik
@@ -25,6 +40,7 @@ const PasswordChangeForm = () => {
       onSubmit={values => updatePassword(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.formContainer}>
+          {error && <Error error={error} />}
           <Input
             onChangeText={handleChange('password')}
             onBlur={handleBlur('password')}
@@ -45,9 +61,7 @@ const PasswordChangeForm = () => {
             }
           />
           {errors.password && touched.password && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>{errors.password}</Text>
-            </View>
+            <Error error={errors.password} />
           )}
           <Input
             onChangeText={handleChange('newPassword')}
@@ -69,9 +83,7 @@ const PasswordChangeForm = () => {
             }
           />
           {errors.newPassword && touched.newPassword && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>{errors.newPassword}</Text>
-            </View>
+            <Error error={errors.newPassword} />
           )}
           <Input
             onChangeText={handleChange('newConfirmationPassword')}
@@ -92,18 +104,16 @@ const PasswordChangeForm = () => {
               />
             }
           />
-          {errors.newConfirmationPassword && touched.newConfirmationPassword && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>
-                {errors.newConfirmationPassword}
-              </Text>
-            </View>
-          )}
+          {errors.newConfirmationPassword &&
+            touched.newConfirmationPassword && (
+              <Error error={errors.newConfirmationPassword} />
+            )}
           <Button
             title="Submit"
             containerStyle={styles.btnContainerRegister}
             buttonStyle={styles.btnRegister}
             onPress={handleSubmit}
+            loading={isLoading}
           />
         </View>
       )}

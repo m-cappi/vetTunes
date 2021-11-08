@@ -33,6 +33,12 @@ class Firebase {
   updateProfile(payload) {
     return this.auth.currentUser.updateProfile(payload);
   }
+
+  updatePassword(password, newPassword) {
+    return this.reauthenticate(password).then(() =>
+      this.auth.currentUser.updatePassword(newPassword),
+    );
+  }
 }
 
 const firebase = new Firebase();
