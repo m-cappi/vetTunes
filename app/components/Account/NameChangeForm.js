@@ -1,11 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Input, Button, Icon} from 'react-native-elements';
 import {Formik} from 'formik';
 
 import {FirebaseContext} from '../../firebase';
 import colors from '../../styles/palette';
 import {NameChangeSchema} from '../../utils/validation';
+import Error from '../Error';
 
 const NameChangeForm = ({
   displayName,
@@ -14,28 +15,28 @@ const NameChangeForm = ({
   toastRef,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const {firebase} = useContext(FirebaseContext);
 
   const updateName = values => {
     if (displayName === values.displayName) {
-      toastRef.current.show("Your name hasn't changed!");
+      setError("Your name hasn't changed!");
       return;
     }
     setIsLoading(true);
+    setError(null);
     const update = {displayName: values.displayName};
     firebase
       .updateProfile(update)
       .then(() => {
+        toastRef.current.show('Name updated successfully!');
         setReloadUser(current => !current);
         setShowModal(false);
       })
       .catch(err => {
         setIsLoading(false);
         console.warn('@updateName.catch: ', err);
-        toastRef.current.show(
-          "There's been an error updating your account",
-          5000,
-        );
+        setError("There's been an error updating your account");
       });
   };
   return (
@@ -47,6 +48,7 @@ const NameChangeForm = ({
       onSubmit={values => updateName(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.formContainer}>
+          {error && <Error error={error} />}
           <Input
             onChangeText={handleChange('displayName')}
             onBlur={handleBlur('displayName')}
@@ -62,9 +64,7 @@ const NameChangeForm = ({
             }
           />
           {errors.displayName && touched.displayName && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>{errors.displayName}</Text>
-            </View>
+            <Error error={errors.displayName} />
           )}
           <Button
             title="Submit"
@@ -102,13 +102,4 @@ const styles = StyleSheet.create({
   iconRight: {
     color: colors.dark1,
   },
-  viewErrors: {
-    backgroundColor: `${colors.med3}a0`,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-  },
-  textErrros: {fontWeight: 'bold'},
 });

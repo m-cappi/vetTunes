@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Input, Icon, Button} from 'react-native-elements';
 import {Formik} from 'formik';
@@ -8,6 +8,7 @@ import {FirebaseContext} from '../../firebase';
 import Loading from '../Loading';
 import colors from '../../styles/palette';
 import {SignupSchema} from '../../utils/validation';
+import Error from '../Error';
 
 const RegistrationForm = ({toastRef}) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,11 +56,7 @@ const RegistrationForm = ({toastRef}) => {
                 />
               }
             />
-            {errors.email && touched.email && (
-              <View style={styles.viewErrors}>
-                <Text style={styles.textErrors}>{errors.email}</Text>
-              </View>
-            )}
+            {errors.email && touched.email && <Error error={errors.email} />}
             <Input
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
@@ -80,9 +77,7 @@ const RegistrationForm = ({toastRef}) => {
               }
             />
             {errors.password && touched.password && (
-              <View style={styles.viewErrors}>
-                <Text style={styles.textErrors}>{errors.password}</Text>
-              </View>
+              <Error error={errors.password} />
             )}
             <Input
               onChangeText={handleChange('confirmationPassword')}
@@ -104,11 +99,7 @@ const RegistrationForm = ({toastRef}) => {
               }
             />
             {errors.confirmationPassword && touched.confirmationPassword && (
-              <View style={styles.viewErrors}>
-                <Text style={styles.textErrors}>
-                  {errors.confirmationPassword}
-                </Text>
-              </View>
+              <Error error={errors.confirmationPassword} />
             )}
             <Button
               title="Register!"
@@ -147,13 +138,4 @@ const styles = StyleSheet.create({
   iconRight: {
     color: colors.dark1,
   },
-  viewErrors: {
-    backgroundColor: `${colors.med3}a0`,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-  },
-  textErrros: {fontWeight: 'bold'},
 });

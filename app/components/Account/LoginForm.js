@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {Input, Icon, Button} from 'react-native-elements';
 import {Formik} from 'formik';
@@ -8,6 +8,7 @@ import {FirebaseContext} from '../../firebase';
 import Loading from '../Loading';
 import {SigninSchema} from '../../utils/validation';
 import colors from '../../styles/palette';
+import Error from '../Error';
 
 const LoginForm = ({toastRef}) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,6 @@ const LoginForm = ({toastRef}) => {
     firebase.auth
       .signInWithEmailAndPassword(values.email, values.password)
       .then(() => {
-        //setIsLoading(false);
         navigation.navigate('account');
       })
       .catch(() => {
@@ -62,11 +62,7 @@ const LoginForm = ({toastRef}) => {
                 />
               }
             />
-            {errors.email && touched.email && (
-              <View style={styles.viewErrors}>
-                <Text style={styles.textErrors}>{errors.email}</Text>
-              </View>
-            )}
+            {errors.email && touched.email && <Error error={errors.email} />}
             <Input
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
@@ -87,9 +83,7 @@ const LoginForm = ({toastRef}) => {
               }
             />
             {errors.password && touched.password && (
-              <View style={styles.viewErrors}>
-                <Text style={styles.textErrors}>{errors.password}</Text>
-              </View>
+              <Error error={errors.password} />
             )}
             <Button
               title="Sign In!"
@@ -120,13 +114,4 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light1,
   },
   iconRight: {color: '#c1c1c1'},
-  viewErrors: {
-    backgroundColor: `${colors.med3}a0`,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-  },
-  textErrros: {fontWeight: 'bold'},
 });

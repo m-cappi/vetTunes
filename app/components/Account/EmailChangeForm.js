@@ -1,36 +1,36 @@
 import React, {useContext, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Input, Button, Icon} from 'react-native-elements';
 import {Formik} from 'formik';
 
 import {FirebaseContext} from '../../firebase';
 import colors from '../../styles/palette';
 import {SigninSchema} from '../../utils/validation';
+import Error from '../Error';
 
 const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
   const {firebase} = useContext(FirebaseContext);
 
   const updateEmail = values => {
     if (email === values.email) {
-      toastRef.current.show("Email hasn't changed!", 3000);
+      setError("Email hasn't changed!");
       return;
     }
     setIsLoading(true);
+    setError(null);
     firebase
       .updateEmail(values.password, values.email)
       .then(() => {
-        toastRef.current.show('Email update successful!');
+        toastRef.current.show('Email updated successfully!');
         setReloadUser(current => !current);
         setShowModal(false);
       })
       .catch(err => {
-        console.warn('@updateEmail.catch: ',err);
-        toastRef.current.show(
-          "There's been an error updating your email",
-          5000,
-        );
+        console.warn('@updateEmail.catch: ', err);
+        setError("There's been an error updating your email");
       })
       .finally(() => {
         setIsLoading(false);
@@ -43,6 +43,7 @@ const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
       onSubmit={values => updateEmail(values)}>
       {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.formContainer}>
+          {error && <Error error={error} />}
           <Input
             onChangeText={handleChange('email')}
             onBlur={handleBlur('email')}
@@ -57,11 +58,7 @@ const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
               />
             }
           />
-          {errors.email && touched.email && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>{errors.email}</Text>
-            </View>
-          )}
+          {errors.email && touched.email && <Error error={errors.email} />}
           <Input
             onChangeText={handleChange('password')}
             onBlur={handleBlur('password')}
@@ -82,9 +79,7 @@ const EmailChangeForm = ({email, setShowModal, setReloadUser, toastRef}) => {
             }
           />
           {errors.password && touched.password && (
-            <View style={styles.viewErrors}>
-              <Text style={styles.textErrors}>{errors.password}</Text>
-            </View>
+            <Error error={errors.password} />
           )}
           <Button
             title="Submit"
@@ -122,13 +117,4 @@ const styles = StyleSheet.create({
   iconRight: {
     color: colors.dark1,
   },
-  viewErrors: {
-    backgroundColor: `${colors.med3}a0`,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-  },
-  textErrros: {fontWeight: 'bold'},
 });
