@@ -14,7 +14,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="top-albums-stack"
+        initialRouteName="account-stack"
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarActiveTintColor: '#00a680',

@@ -1,4 +1,5 @@
 import {map, find, filter, slice} from 'lodash';
+import axios from 'axios';
 
 export class Album {
   constructor({
@@ -38,11 +39,24 @@ export class Album {
 }
 
 export class AlbumCollection {
-  constructor(rawData) {
-    this.collection = map(rawData, data => this.parseAlbum(data));
+  constructor(url) {
+    this.url = url;
+    this.collection = [];
     this.paginationPos = 0;
     this.itemCount = this.collection.length;
     this.endOfList = false;
+    this.loadData();
+  }
+
+  async loadData() {
+    const payload = await axios
+      .get(this.url)
+      .then(res => res.data)
+      .then(res => {
+        return map(res.feed.entry, data => this.parseAlbum(data));
+      })
+      .catch(err => console.warn(err));
+    this.collection = payload;
   }
 
   parseAlbum(data) {
