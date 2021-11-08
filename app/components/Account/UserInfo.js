@@ -13,34 +13,40 @@ const UserInfo = ({
   setReloadUser,
   userInfo: {photoURL, displayName, email, uid},
 }) => {
-  const firebase = useContext(FirebaseContext);
+  const {firebase} = useContext(FirebaseContext);
 
   const changeAvatar = async () => {
     const userResponse = await requestStoragePermission();
     if (userResponse === 'GRANTED') {
-      const res = await launchImageLibrary({
-        mediaType: 'photo',
-        maxHeight: 480,
-        maxWidth: 852,
-      });
-      if (res.errorCode) {
-        toastRef.current.show(
-          'There was an error accessing your media library',
-        );
-      } else if (!res.didCancel) {
-        setLoadingInfo('Updating your avatar');
-        setIsLoading(true);
-        uploadImage(res.uri)
-          .then(() => updatePhotoUrl())
-          .catch(() => {
+      await launchImageLibrary(
+        {
+          mediaType: 'photo',
+          maxHeight: 480,
+          maxWidth: 852,
+        },
+        res => {
+          if (res.errorCode) {
+            console.warn(res);
             toastRef.current.show(
-              "There's been an error while handling your request",
+              'There was an error accessing your media library',
+              3000,
             );
-          })
-          .finally(() => setIsLoading(false));
-      } else {
-        console.log(res);
-      }
+          } else if (!res.didCancel) {
+            setLoadingInfo('Updating your avatar');
+            setIsLoading(true);
+            uploadImage(res.assets[0].uri)
+              .then(() => updatePhotoUrl())
+              .catch(err => {
+                console.warn('@uploadImage.catch: ', err);
+                toastRef.current.show(
+                  "There's been an error while handling your request",
+                  3000,
+                );
+              })
+              .finally(() => setIsLoading(false));
+          }
+        },
+      );
     }
   };
 
@@ -51,15 +57,17 @@ const UserInfo = ({
   };
 
   const updatePhotoUrl = () => {
-    firebase.storage
-      .ref(`/${uid}`)
+    console.log('At updatePhotoUrl');
+    return firebase.storage
+      .ref(`avatar/${uid}`)
       .getDownloadURL()
       .then(async res => {
         const update = {photoURL: res};
         await firebase.auth.currentUser.updateProfile(update);
         setReloadUser(current => !current);
       })
-      .catch(() => {
+      .catch(err => {
+        console.log('@updatePhotoUrl.catch: ', err);
         toastRef.current.show(
           "There's been an error while updating your account",
         );

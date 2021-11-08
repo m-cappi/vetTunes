@@ -38,7 +38,13 @@ const User = () => {
             setReloadUser={setReloadUser}
             setLoadingInfo={setLoadingInfo}
           />
-          <AccountOptions />
+          <AccountOptions
+            toastRef={toastRef}
+            userInfo={userInfo}
+            setIsLoading={setIsLoading}
+            setReloadUser={setReloadUser}
+            setLoadingInfo={setLoadingInfo}
+          />
         </>
       )}
       <Button
