@@ -1,4 +1,4 @@
-import {map, find, filter} from 'lodash';
+import {map, find, filter, slice} from 'lodash';
 
 export class Album {
   constructor({
@@ -26,13 +26,13 @@ export class Album {
     this.releaseDate = releaseDate; //at ['im:releaseDate'] {date:str at .label, label:str at .attributes.label}
     this.externalLink = externalLink; //href:str at .id.label
   }
-  get smImg() {
+  smImg() {
     return this.images[0];
   }
-  get mdImg() {
+  mdImg() {
     return this.images[1];
   }
-  get lgImg() {
+  lgImg() {
     return this.images[2];
   }
 }
@@ -40,6 +40,9 @@ export class Album {
 export class AlbumCollection {
   constructor(rawData) {
     this.collection = map(rawData, data => this.parseAlbum(data));
+    this.paginationPos = 0;
+    this.itemCount = this.collection.length;
+    this.endOfList = false;
   }
 
   parseAlbum(data) {
@@ -49,7 +52,7 @@ export class AlbumCollection {
     albumTemp.albumName = data['im:name'].label;
     albumTemp.artist = {
       name: data['im:artist'].label,
-      link: data['im:artist']?.attributes?.href,
+      link: data['im:artist']?.attributes?.href || null,
     };
     albumTemp.pricing = {
       label: data['im:price'].label,
@@ -95,5 +98,18 @@ export class AlbumCollection {
       this.collection,
       album => album.category.term.match(regex) && album,
     );
+  }
+
+  getNextBatch(step = 10) {
+    let paginationEnd = this.paginationPos + step;
+    if (paginationEnd > this.collection.length) {
+      paginationEnd = this.collection.length;
+    }
+    const batch = slice(this.collection, this.paginationPos, paginationEnd);
+    this.paginationPos = paginationEnd;
+    if (this.paginationPos === this.collection.length) {
+      this.endOfList = true;
+    }
+    return batch;
   }
 }

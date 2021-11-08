@@ -58,3 +58,5 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+app/utils/test.js
+app/utils/dump.js

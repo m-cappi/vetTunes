@@ -7,12 +7,13 @@ const getAlbums = async (url = BASE_URL) => {
   return await axios
     .get(url)
     .then(res => res.data)
-    .catch(err => console.log(err));
+    .catch(err => console.warn(err));
 };
 
 const Top100 = async () => {
   const res = await getAlbums();
-  return new AlbumCollection(res.feed.entry);
+  const top = new AlbumCollection(res.feed.entry);
+  return top;
 };
 
 export default Top100;
