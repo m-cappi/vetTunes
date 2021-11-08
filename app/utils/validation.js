@@ -9,10 +9,11 @@ const passwordRule = yup
   .min(6, 'Too short!')
   .max(30, 'Too long!')
   .required('Password is required!');
-const confirmationPasswordRule = yup
-  .string()
-  .required('Password confirmation is required!')
-  .oneOf([yup.ref('password'), null], 'Passwords must match');
+const confirmationPasswordRule = match =>
+  yup
+    .string()
+    .required('Password confirmation is required!')
+    .oneOf([yup.ref(match), null], 'Passwords must match');
 const nameRule = yup
   .string()
   .required('')
@@ -22,7 +23,7 @@ const nameRule = yup
 export const SignupSchema = yup.object().shape({
   email: emailRule,
   password: passwordRule,
-  confirmationPassword: confirmationPasswordRule,
+  confirmationPassword: confirmationPasswordRule('password'),
 });
 
 export const SigninSchema = yup
@@ -32,7 +33,7 @@ export const SigninSchema = yup
 export const UpdatePasswordSchema = yup.object().shape({
   password: passwordRule,
   newPassword: passwordRule,
-  newConfirmationPassword: confirmationPasswordRule,
+  newConfirmationPassword: confirmationPasswordRule('newPassword'),
 });
 
 export const NameChangeSchema = yup.object().shape({displayName: nameRule});
