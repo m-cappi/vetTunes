@@ -1,11 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Icon, Image} from 'react-native-elements';
 import ImageView from 'react-native-image-viewing';
+import Toast from 'react-native-easy-toast';
+
+import {FirebaseContext} from '../../firebase';
 
 const AlbumShowcase = ({album}) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [imgFullScreen, setImgFullScreen] = useState(false);
+  const [isUserLogged, setIsUserLogged] = useState(false);
+  const toastRef = useRef();
   const {
     albumName,
     artist,
@@ -16,16 +21,64 @@ const AlbumShowcase = ({album}) => {
     pricing,
     releaseDate,
     externalLink,
+    id,
   } = album;
   const image = album.lgImg();
 
+  const {firebase} = useContext(FirebaseContext);
+
+  firebase.auth.onAuthStateChanged(user => {
+    user ? setIsUserLogged(true) : setIsUserLogged(false);
+  });
+
+  useEffect(() => {
+    if (isUserLogged) {
+      firebase
+        .checkFavoriteStatus(id)
+        .then(res => {
+          if (res.docs.length === 1) {
+            setIsFavorite(true);
+          }
+        })
+        .catch();
+    }
+  }, [isUserLogged]);
+
   const handleFavorite = () => {
     if (isFavorite) {
-      console.log('Remove from favorite');
-      setIsFavorite(false);
+      firebase
+        .removeFavorite(id)
+        .then(() => {
+          setIsFavorite(false);
+          toastRef.current.show(
+            'Album successfully remove from your favorites',
+            3000,
+          );
+        })
+        .catch(err => {
+          console.warn(err);
+          toastRef.current.show(
+            "There's been an error handling your request",
+            3000,
+          );
+        });
     } else {
-      console.log('Add to favorite');
-      setIsFavorite(true);
+      firebase
+        .addFavorite(id)
+        .then(() => {
+          setIsFavorite(true);
+          toastRef.current.show(
+            'Album successfully added to your favorites',
+            3000,
+          );
+        })
+        .catch(err => {
+          console.warn(err);
+          toastRef.current.show(
+            "There's been an error handling your request",
+            3000,
+          );
+        });
     }
   };
 
@@ -67,6 +120,7 @@ const AlbumShowcase = ({album}) => {
         </Text>
         <Text style={styles.detailSecondary}>{label}</Text>
       </View>
+      <Toast ref={toastRef} position="center" opacity={0.9} />
     </View>
   );
 };

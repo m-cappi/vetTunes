@@ -10,7 +10,7 @@ class Firebase {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
-    this.db = app.firestore();
+    this.db = app.firestore()
     this.auth = app.auth();
     this.storage = app.storage();
   }
@@ -38,6 +38,35 @@ class Firebase {
     return this.reauthenticate(password).then(() =>
       this.auth.currentUser.updatePassword(newPassword),
     );
+  }
+
+  addFavorite(id) {
+    const payload = {userId: this.auth.currentUser.uid, albumId: id};
+    return this.db.collection('favorites').add(payload);
+  }
+
+  removeFavorite(id) {
+    try {
+      const userId = this.auth.currentUser.uid;
+      const ref = this.db
+        .collection('favorites')
+        .where('albumId', '==', id)
+        .where('userId', '==', userId)
+        .get();
+      const favoriteId = ref[0].id;
+      return this.db.collection('favorites').doc(favoriteId).delete();
+    } catch (err) {
+      return err;
+    }
+  }
+
+  checkFavoriteStatus(id) {
+    const userId = this.auth.currentUser.uid;
+    return this.db
+      .collection('favorites')
+      .where('albumId', '==', id)
+      .where('userId', '==', userId)
+      .get();
   }
 }
 
