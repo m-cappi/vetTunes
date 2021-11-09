@@ -2,8 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Formik} from 'formik';
 import {ButtonGroup, Input, Icon, Button} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native';
-import {isEmpty} from 'lodash';
+import {useNavigation} from '@react-navigation/native'; 
+import { isEmpty } from 'lodash';
 
 import {ItunesContext} from '../../utils/itunes';
 import colors from '../../styles/palette';
@@ -18,6 +18,9 @@ const SearchForm = () => {
 
   const navigation = useNavigation();
   const top100 = useContext(ItunesContext);
+  const showResults = payload => {
+    navigation.navigate('search-results', {payload});
+  };
 
   useEffect(() => {
     (async () => {
@@ -33,33 +36,26 @@ const SearchForm = () => {
   const handleSearch = async values => {
     setIsLoading(true);
     let payload;
-    console.log('Search for me!', values, searchTypesIndex);
+
     switch (searchTypesIndex) {
       case 0:
-        console.log('Search by Genre! ', values);
         payload = await albums.findByGenre(values.searchValue);
-        console.log(payload);
         break;
 
       case 1:
-        console.log('Search by Album! ', values);
         payload = await albums.findByAlbum(values.searchValue);
-        console.log(payload);
         break;
 
       case 2:
-        console.log('Search by Artist! ', values);
         payload = await albums.findByArtist(values.searchValue);
-        console.log(payload);
         break;
 
       default:
-        console.log('General search! ', values);
-        payload = await albums.findAny(values.searchValue);
-        console.log(payload);
+        payload = await albums.findAny(values.searchValue)
         break;
     }
     setIsLoading(false);
+    showResults(payload);
   };
 
   const searchTypes = ['Genre', 'Album', 'Artist'];
