@@ -3,6 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Favorites from '../screens/Favorites/Favorites';
 import colors from '../styles/palette';
 
+import FavAlbum from '../screens/Favorites/FavAlbum';
+
 const Stack = createNativeStackNavigator();
 
 const FavoritesStack = () => {
@@ -23,6 +25,7 @@ const FavoritesStack = () => {
         component={Favorites}
         options={{title: 'My Favorites'}}
       />
+      <Stack.Screen name="fav-album" component={FavAlbum} />
     </Stack.Navigator>
   );
 };

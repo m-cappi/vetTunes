@@ -30,7 +30,7 @@ const FavoriteAlbum = ({
   const {firebase} = useContext(FirebaseContext);
 
   const goAlbum = () => {
-    navigation.navigate('album', {
+    navigation.navigate('fav-album', {
       id,
       albumName,
     });
