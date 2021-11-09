@@ -10,6 +10,7 @@ import {
 import {Image, Icon} from 'react-native-elements';
 import {isEmpty} from 'lodash';
 import colors from '../../styles/palette';
+import {FirebaseContext} from '../../firebase';
 
 const FavoriteAlbum = ({
   album,
@@ -25,6 +26,8 @@ const FavoriteAlbum = ({
   const artistName = artist.name;
   const categoryName = category.term;
   const price = pricing.label;
+
+  const {firebase} = useContext(FirebaseContext);
 
   const goAlbum = () => {
     navigation.navigate('album', {
@@ -52,7 +55,26 @@ const FavoriteAlbum = ({
   };
 
   const removeFavorite = () => {
-    console.log('Album deleted!');
+    setIsLoading(true);
+    firebase
+      .removeFavorite(id)
+      .then(() => {
+        toastRef.current.show(
+          'Album successfully remove from your favorites',
+          3000,
+        );
+        setReloadData(current => !current);
+      })
+      .catch(err => {
+        console.warn(err);
+        toastRef.current.show(
+          "There's been an error handling your request",
+          3000,
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -62,6 +84,7 @@ const FavoriteAlbum = ({
           type="material-community"
           name="heart"
           color="#f00"
+          size={30}
           containerStyle={styles.favorite}
           onPress={confirmRemoveFavorite}
           underlayColor="transparent"
@@ -95,7 +118,15 @@ export default FavoriteAlbum;
 
 const styles = StyleSheet.create({
   viewAlbum: {flexDirection: 'row', margin: 10},
-  favorite: {position: 'absolute', top: 0, right: 0},
+  favorite: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: '#0000',
+    padding: 20,
+    borderRadius: 120,
+    zIndex: 2,
+  },
   viewAlbumImg: {marginRight: 10},
   imgAlbum: {width: 100, height: 100},
   viewInfo: {width: '70%'},

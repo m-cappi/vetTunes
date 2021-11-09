@@ -8,11 +8,10 @@ const Album = ({navigation, route}) => {
   const [album, setAlbum] = useState(null);
   const {id, albumName} = route.params;
 
-  navigation.setOptions({title: albumName});
-
   const top100 = useContext(ItunesContext);
 
   useEffect(() => {
+    navigation.setOptions({title: albumName});
     setAlbum(top100.findByPk(id));
   }, [id]);
 
