@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
+    marginHorizontal: 10,
   },
   textErrros: {fontWeight: 'bold', color: '#000'},
 });
