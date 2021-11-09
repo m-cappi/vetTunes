@@ -2,6 +2,7 @@ import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
+import colors from '../../styles/palette';
 
 const Guest = () => {
   const navigation = useNavigation();
@@ -12,13 +13,10 @@ const Guest = () => {
         resizeMode="contain"
         style={styles.image}
       />
-      <Text style={styles.title}>Call to Action</Text>
+      <Text style={styles.title}>Join our team!</Text>
       <Text style={styles.description}>
-        Motivational speech Lorem ipsum dolor sit amet, consectetur adipisicing
-        elit. Nemo nostrum quaerat odio saepe ipsam molestias at corrupti
-        sapiente! In alias quidem eaque debitis pariatur, a rem fugiat
-        cupiditate corporis assumenda cumque esse, ipsum libero minima
-        aspernatur modi tempora numquam perferendis.
+        Connect with us in order to access our latest features and enjoy the
+        best music app out there!
       </Text>
       <View style={styles.viewBtn}>
         <Button
@@ -56,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   btnStyle: {
-    backgroundColor: '#00a680',
+    backgroundColor: colors.light1,
   },
   btnContainer: {
     width: '70%',

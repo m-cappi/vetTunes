@@ -15,14 +15,14 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="account-stack"
+        initialRouteName="top-albums-stack"
         screenOptions={({route}) => ({
           headerShown: false,
-          tabBarActiveBackgroundColor: colors.med1,
-          tabBarInactiveBackgroundColor: colors.med2,
+          tabBarActiveBackgroundColor: colors.med3,
+          tabBarInactiveBackgroundColor: colors.dark2,
           tabBarHideOnKeyboard: true,
-          tabBarActiveTintColor: colors.light3,
-          tabBarInactiveTintColor: colors.light1,
+          tabBarActiveTintColor: "#000",
+          tabBarInactiveTintColor: "#fff",
           tabBarIcon: ({color}) => screenOptions(route, color),
         })}>
         <Tab.Screen

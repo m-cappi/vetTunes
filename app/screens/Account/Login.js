@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-easy-toast';
 import LoginForm from '../../components/Account/LoginForm';
+import colors from '../../styles/palette';
 
 const Login = () => {
   const toastRef = useRef();
@@ -14,7 +15,7 @@ const Login = () => {
         style={styles.logo}
       />
       <View style={styles.viewContainer}>
-        <LoginForm toastRef={toastRef}/>
+        <LoginForm toastRef={toastRef} />
         <CreateAccount />
       </View>
       <Toast ref={toastRef} position="center" opacity={0.9} />
@@ -28,14 +29,12 @@ const CreateAccount = () => {
   const navigation = useNavigation();
 
   return (
-    <Text style={styles.textRegister}>
-      First time around?{' '}
-      <Text
-        style={styles.btnRegister}
-        onPress={() => navigation.navigate('register')}>
+    <View style={styles.viewRegister}>
+      <Text>First time around?{'\n'}</Text>
+      <Text style={styles.link} onPress={() => navigation.navigate('register')}>
         Register now!
       </Text>
-    </Text>
+    </View>
   );
 };
 
@@ -49,16 +48,15 @@ const styles = StyleSheet.create({
     marginRight: 40,
     marginLeft: 40,
   },
-  textRegister: {
+  viewRegister: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 15,
-    alignSelf: 'center',
   },
-  btnRegister: {
-    color: '#00a680',
+  link: {
+    color: colors.med3,
     fontWeight: 'bold',
-  },
-  divider: {
-    backgroundColor: '#00a680',
-    margin: 40,
+    fontSize: 17,
   },
 });
