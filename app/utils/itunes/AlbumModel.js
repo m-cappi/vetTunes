@@ -95,12 +95,30 @@ export class AlbumCollection {
     return find(this.collection, album => album.id === id);
   }
 
+  findAny(criteria) {
+    const regex = new RegExp(criteria, 'i');
+    return filter(
+      this.collection,
+      album =>
+        (album.title.match(regex) || album.category.term.match(regex)) && album,
+    );
+  }
+
   findByArtist(artist) {
     //returns an array of Albums
     const regex = new RegExp(artist, 'i');
     return filter(
       this.collection,
       album => album.artist.name.match(regex) && album,
+    );
+  }
+
+  findByAlbum(album) {
+    //returns an array of Albums
+    const regex = new RegExp(album, 'i');
+    return filter(
+      this.collection,
+      album => album.albumName.match(regex) && album,
     );
   }
 
