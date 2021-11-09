@@ -34,8 +34,8 @@ const LoginForm = ({toastRef}) => {
     <>
       <Formik
         initialValues={{
-          email: 'demo@mail.com',
-          password: 'demo123',
+          email: '',
+          password: '',
         }}
         validationSchema={SigninSchema}
         onSubmit={values => login(values)}>
