@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Icon} from 'react-native-elements';
 
+import colors from '../styles/palette';
 import TopAlbumsStack from './TopAlbumsStack';
 import AccountStack from './AccountStack';
 import FavoritesStack from './FavoritesStack';
@@ -17,8 +18,11 @@ const Navigation = () => {
         initialRouteName="account-stack"
         screenOptions={({route}) => ({
           headerShown: false,
-          tabBarActiveTintColor: '#00a680',
-          tabBarInactiveTintColor: '#646464',
+          tabBarActiveBackgroundColor: colors.med1,
+          tabBarInactiveBackgroundColor: colors.med2,
+          tabBarHideOnKeyboard: true,
+          tabBarActiveTintColor: colors.light3,
+          tabBarInactiveTintColor: colors.light1,
           tabBarIcon: ({color}) => screenOptions(route, color),
         })}>
         <Tab.Screen
