@@ -45,7 +45,6 @@ export class AlbumCollection {
     this.paginationPos = 0;
     this.itemCount = this.collection.length;
     this.endOfList = false;
-    this.loadData();
   }
 
   async loadData() {

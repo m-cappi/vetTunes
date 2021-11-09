@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {View} from 'react-native';
+import {isEmpty} from 'lodash';
 
 import {ItunesContext} from '../../utils/itunes';
 
@@ -14,23 +15,25 @@ const TopAlbums = () => {
 
   useEffect(() => {
     (async () => {
-      const albumList = top100;
-      setTimeout(() => {
-        setAlbums(albumList);
-        setIsLoading(false);
-      }, 3000);
+      if (isEmpty(top100.collection)) {
+        await top100.loadData();
+        setAlbums(top100);
+      } else {
+        setAlbums(top100);
+      }
+      setIsLoading(false);
     })();
   }, []);
 
   return (
     <View>
-      {isLoading ? (
+      {isLoading || isEmpty(albums.collection) ? (
         <Loading
           isVisible={isLoading}
           text="We are getting the best albums for you"
         />
       ) : (
-        albums && <ListAlbums albums={albums} />
+        albums && !isEmpty(albums.collection) && <ListAlbums albums={albums} />
       )}
     </View>
   );
