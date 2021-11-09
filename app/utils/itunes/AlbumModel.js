@@ -92,12 +92,12 @@ export class AlbumCollection {
   }
 
   findByPk(id) {
-    //returns an object
+    //returns an Album
     return find(this.collection, album => album.id === id);
   }
 
   findByArtist(artist) {
-    //returns an array
+    //returns an array of Albums
     const regex = new RegExp(artist, 'i');
     return filter(
       this.collection,
@@ -106,7 +106,7 @@ export class AlbumCollection {
   }
 
   findByGenre(genre) {
-    //returns an array
+    //returns an array of Albums
     const regex = new RegExp(genre, 'i');
     return filter(
       this.collection,
@@ -115,6 +115,7 @@ export class AlbumCollection {
   }
 
   getNextBatch(step = 10) {
+    //returns an array of Albums
     let paginationEnd = this.paginationPos + step;
     if (paginationEnd > this.collection.length) {
       paginationEnd = this.collection.length;

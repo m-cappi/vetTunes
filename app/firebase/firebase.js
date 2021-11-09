@@ -10,7 +10,7 @@ class Firebase {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
-    this.db = app.firestore()
+    this.db = app.firestore();
     this.auth = app.auth();
     this.storage = app.storage();
   }
@@ -66,7 +66,19 @@ class Firebase {
       .collection('favorites')
       .where('albumId', '==', id)
       .where('userId', '==', userId)
-      .get();
+      .get()
+      .then(res => {
+        const idList = [];
+        res.forEach(doc => {
+          idList.push(doc.data().albumId);
+        });
+        return idList;
+      });
+  }
+
+  getFavoritesId() {
+    const userId = this.auth.currentUser.uid;
+    return this.db.collection('favorites').where('userId', '==', userId).get();
   }
 }
 
