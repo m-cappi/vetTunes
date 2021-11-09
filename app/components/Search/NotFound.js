@@ -10,10 +10,10 @@ const NotFound = ({navigation}) => {
         type="material-community"
         name="alert-outline"
         size={50}
-        onPress={()=>navigation.goBack()}
+        onPress={() => navigation.goBack()}
       />
       <Text style={styles.text}>We couldn't find any such thing{'\n'}</Text>
-      <Text style={styles.link} onPress={()=>navigation.goBack()} >
+      <Text style={styles.link} onPress={() => navigation.goBack()}>
         Let's try again!
       </Text>
     </View>

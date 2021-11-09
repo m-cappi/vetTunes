@@ -21,8 +21,8 @@ const Navigation = () => {
           tabBarActiveBackgroundColor: colors.med3,
           tabBarInactiveBackgroundColor: colors.dark2,
           tabBarHideOnKeyboard: true,
-          tabBarActiveTintColor: "#000",
-          tabBarInactiveTintColor: "#fff",
+          tabBarActiveTintColor: '#000',
+          tabBarInactiveTintColor: '#fff',
           tabBarIcon: ({color}) => screenOptions(route, color),
         })}>
         <Tab.Screen

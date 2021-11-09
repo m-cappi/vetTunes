@@ -2,8 +2,8 @@ import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Formik} from 'formik';
 import {ButtonGroup, Input, Icon, Button} from 'react-native-elements';
-import {useNavigation} from '@react-navigation/native'; 
-import { isEmpty } from 'lodash';
+import {useNavigation} from '@react-navigation/native';
+import {isEmpty} from 'lodash';
 
 import {ItunesContext} from '../../utils/itunes';
 import colors from '../../styles/palette';
@@ -51,7 +51,7 @@ const SearchForm = () => {
         break;
 
       default:
-        payload = await albums.findAny(values.searchValue)
+        payload = await albums.findAny(values.searchValue);
         break;
     }
     setIsLoading(false);

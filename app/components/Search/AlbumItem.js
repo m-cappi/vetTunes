@@ -85,15 +85,17 @@ const AlbumItem = ({album, isUserLogged, firebase, navigation, toastRef}) => {
   return (
     <TouchableOpacity onPress={() => goAlbum()}>
       <View style={styles.viewAlbum}>
-        <Icon
-          type="material-community"
-          name={isFavorite ? 'heart' : 'heart-outline'}
-          color="#f00"
-          size={30}
-          containerStyle={styles.favorite}
-          onPress={handleFavorite}
-          underlayColor="transparent"
-        />
+        {isUserLogged && (
+          <Icon
+            type="material-community"
+            name={isFavorite ? 'heart' : 'heart-outline'}
+            color="#f00"
+            size={30}
+            containerStyle={styles.favorite}
+            onPress={handleFavorite}
+            underlayColor="transparent"
+          />
+        )}
         <View style={styles.viewAlbumImg}>
           <Image
             resizeMode="cover"

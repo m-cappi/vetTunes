@@ -1,10 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
-import { Icon, Button} from 'react-native-elements';
+import {StyleSheet, View, Text} from 'react-native';
+import {Icon, Button} from 'react-native-elements';
 import colors from '../../styles/palette';
 
 const UserNotLogged = props => {

@@ -26,7 +26,7 @@ const UserInfo = ({
         },
         res => {
           if (res.errorCode) {
-            console.warn('@changeAvatar>launchImageLibrary.errorCode: ',res);
+            console.warn('@changeAvatar>launchImageLibrary.errorCode: ', res);
             toastRef.current.show(
               'There was an error accessing your media library',
               3000,

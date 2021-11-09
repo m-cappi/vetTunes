@@ -11,18 +11,7 @@ const AlbumShowcase = ({album}) => {
   const [imgFullScreen, setImgFullScreen] = useState(false);
   const [isUserLogged, setIsUserLogged] = useState(false);
   const toastRef = useRef();
-  const {
-    albumName,
-    artist,
-    category,
-    label,
-    title,
-    nroSongs,
-    pricing,
-    releaseDate,
-    externalLink,
-    id,
-  } = album;
+  const {albumName, artist, category, label, pricing, releaseDate, id} = album;
   const image = album.lgImg();
 
   const {firebase} = useContext(FirebaseContext);
@@ -85,14 +74,16 @@ const AlbumShowcase = ({album}) => {
   return (
     <View>
       <View style={styles.viewFavorite}>
-        <Icon
-          type="material-community"
-          name={isFavorite ? 'heart' : 'heart-outline'}
-          onPress={() => handleFavorite()}
-          color={isFavorite ? '#f00' : '#000'}
-          size={35}
-          underlayColor="transparent"
-        />
+        {isUserLogged && (
+          <Icon
+            type="material-community"
+            name={isFavorite ? 'heart' : 'heart-outline'}
+            onPress={() => handleFavorite()}
+            color={isFavorite ? '#f00' : '#000'}
+            size={35}
+            underlayColor="transparent"
+          />
+        )}
       </View>
       <Image
         source={{uri: image.url}}

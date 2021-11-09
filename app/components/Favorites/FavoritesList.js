@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
-import { FirebaseContext } from '../../firebase';
+import {FirebaseContext} from '../../firebase';
 
 import Loading from '../Loading';
 import FavoriteAlbum from './FavoriteAlbum';
