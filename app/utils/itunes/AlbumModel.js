@@ -15,17 +15,17 @@ export class Album {
     releaseDate,
     externalLink,
   }) {
-    this.id = id; //str at .id.attributes["im:id"]
-    this.title = title; //str at .title.label
-    this.albumName = albumName; //str at ['im:name'].label
-    this.artist = artist; //at ['im:artist']{name:str at label, link:str at attributes.href}
-    this.pricing = pricing; //at ['im:price']{label:str at .label,amount:parseFloat at attributes.amount, currency:str at attributes.currency}
-    this.images = images; // at ['im:image'] [{url:str at [index].label, height:parseInt at [index].attributes.height}]
-    this.label = label; //str at .rights.label
-    this.nroSongs = nroSongs; //str at ['im:itemCount'].label
-    this.category = category; // at .category.attributes {id:str at ['im:id'], term:str at .term}
-    this.releaseDate = releaseDate; //at ['im:releaseDate'] {date:str at .label, label:str at .attributes.label}
-    this.externalLink = externalLink; //href:str at .id.label
+    this.id = id;
+    this.title = title;
+    this.albumName = albumName;
+    this.artist = artist;
+    this.pricing = pricing;
+    this.images = images;
+    this.label = label;
+    this.nroSongs = nroSongs;
+    this.category = category;
+    this.releaseDate = releaseDate;
+    this.externalLink = externalLink;
   }
   smImg() {
     return this.images[0];
