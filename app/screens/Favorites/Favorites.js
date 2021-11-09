@@ -1,20 +1,8 @@
-import React, {useState, useRef, useCallback, useContext} from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
-import {Image, Icon, Button} from 'react-native-elements';
+import React, {useState, useCallback, useContext} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import Toast from 'react-native-easy-toast';
 
 import {FirebaseContext} from '../../firebase';
 import {ItunesContext} from '../../utils/itunes';
-import colors from '../../styles/palette';
 import UserNotLogged from '../../components/Favorites/UserNotLogged';
 import NoFavorites from '../../components/Favorites/NoFavorites';
 import FavoritesList from '../../components/Favorites/FavoritesList';

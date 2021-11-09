@@ -1,15 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {isEmpty} from 'lodash';
+import SearchList from '../../components/Search/SearchList';
+import NotFound from '../../components/Search/NotFound';
 
 const SearchResults = ({navigation, route}) => {
-  const albums = route.params;
+  const {payload} = route.params;
   return (
-    <View>
-      <Text>Albums List</Text>
-    </View>
+    <>
+      {!isEmpty(payload) ? (
+        <SearchList albums={payload} navigation={navigation} />
+      ) : (
+        <NotFound navigation={navigation} />
+      )}
+    </>
   );
 };
 
 export default SearchResults;
-
-const styles = StyleSheet.create({});
