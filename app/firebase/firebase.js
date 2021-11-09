@@ -10,7 +10,7 @@ class Firebase {
     if (!app.apps.length) {
       app.initializeApp(firebaseConfig);
     }
-    this.db = app.firestore();
+    this.db = app.firestore(); //.settings({experimentalForceLongPolling: true});
     this.auth = app.auth();
     this.storage = app.storage();
   }
@@ -48,13 +48,17 @@ class Firebase {
   removeFavorite(id) {
     try {
       const userId = this.auth.currentUser.uid;
-      const ref = this.db
+      return this.db
         .collection('favorites')
         .where('albumId', '==', id)
         .where('userId', '==', userId)
-        .get();
-      const favoriteId = ref[0].id;
-      return this.db.collection('favorites').doc(favoriteId).delete();
+        .get()
+        .then(res => {
+          res.forEach(doc => {
+            const favoriteId = doc.id;
+            this.db.collection('favorites').doc(favoriteId).delete();
+          });
+        });
     } catch (err) {
       return err;
     }
@@ -66,6 +70,14 @@ class Firebase {
       .collection('favorites')
       .where('albumId', '==', id)
       .where('userId', '==', userId)
+      .get();
+  }
+
+  getFavoritesId() {
+    const userId = this.auth.currentUser.uid;
+    return this.db
+      .collection('favorites')
+      .where('userId', '==', userId)
       .get()
       .then(res => {
         const idList = [];
@@ -74,11 +86,6 @@ class Firebase {
         });
         return idList;
       });
-  }
-
-  getFavoritesId() {
-    const userId = this.auth.currentUser.uid;
-    return this.db.collection('favorites').where('userId', '==', userId).get();
   }
 }
 
