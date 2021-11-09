@@ -1,18 +1,14 @@
-import React, {useState, useRef, useCallback, useContext} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   FlatList,
   ActivityIndicator,
-  TouchableOpacity,
-  Alert,
 } from 'react-native';
-import {Image, Icon, Button} from 'react-native-elements';
-import {useFocusEffect} from '@react-navigation/native';
 import Toast from 'react-native-easy-toast';
+import { FirebaseContext } from '../../firebase';
 
-import colors from '../../styles/palette';
 import Loading from '../Loading';
 import FavoriteAlbum from './FavoriteAlbum';
 
@@ -20,8 +16,10 @@ const FavoritesList = ({navigation, favoriteAlbums, setReloadData}) => {
   const [isLoading, setIsLoading] = useState(false);
   const toastRef = useRef();
 
+  const {firebase} = useContext(FirebaseContext);
+
   return (
-    <View style={styles.viewBody}>
+    <View>
       {favoriteAlbums ? (
         <FlatList
           data={favoriteAlbums}
@@ -32,6 +30,7 @@ const FavoritesList = ({navigation, favoriteAlbums, setReloadData}) => {
               toastRef={toastRef}
               setReloadData={setReloadData}
               navigation={navigation}
+              firebase={firebase}
             />
           )}
           keyExtractor={(item, index) => index.toString()}

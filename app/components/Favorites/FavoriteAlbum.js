@@ -1,4 +1,4 @@
-import React, {useState, useRef, useCallback, useContext} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
@@ -10,7 +10,6 @@ import {
 import {Image, Icon} from 'react-native-elements';
 import {isEmpty} from 'lodash';
 import colors from '../../styles/palette';
-import {FirebaseContext} from '../../firebase';
 
 const FavoriteAlbum = ({
   album,
@@ -18,6 +17,7 @@ const FavoriteAlbum = ({
   setIsLoading,
   toastRef,
   setReloadData,
+  firebase,
 }) => {
   const {
     item: {id, albumName, artist, category, pricing},
@@ -26,8 +26,6 @@ const FavoriteAlbum = ({
   const artistName = artist.name;
   const categoryName = category.term;
   const price = pricing.label;
-
-  const {firebase} = useContext(FirebaseContext);
 
   const goAlbum = () => {
     navigation.navigate('fav-album', {
