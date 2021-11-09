@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View} from 'react-native';
 
 import {ItunesContext} from '../../utils/itunes';
 
@@ -7,8 +7,8 @@ import ListAlbums from '../../components/Albums/ListAlbums';
 import Loading from '../../components/Loading';
 
 const TopAlbums = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [albums, setAlbums] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [albums, setAlbums] = useState(null);
 
   const top100 = useContext(ItunesContext);
 
@@ -21,7 +21,7 @@ const TopAlbums = () => {
       }, 3000);
     })();
   }, []);
-  
+
   return (
     <View>
       {isLoading ? (
@@ -30,7 +30,7 @@ const TopAlbums = () => {
           text="We are getting the best albums for you"
         />
       ) : (
-        <ListAlbums albums={albums} />
+        albums && <ListAlbums albums={albums} />
       )}
     </View>
   );
