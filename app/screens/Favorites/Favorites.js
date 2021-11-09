@@ -32,14 +32,16 @@ const Favorites = ({navigation}) => {
   });
 
   useFocusEffect(
-    useCallback(async () => {
+    useCallback(() => {
       if (isUserLogged) {
-        const idList = await firebase.getFavoritesId();
-        const albumList = [];
-        idList.forEach(albumId => {
-          albumList.push(top100.findByPk(albumId));
-        });
-        setFavoriteAlbums(albumList);
+        (async () => {
+          const idList = await firebase.getFavoritesId();
+          const albumList = [];
+          idList.forEach(albumId => {
+            albumList.push(top100.findByPk(albumId));
+          });
+          setFavoriteAlbums(albumList);
+        })();
       }
     }, [isUserLogged, reloadData]),
   );
