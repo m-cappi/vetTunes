@@ -29,10 +29,12 @@ or find it on this [repo](androidDemo.apk)
 
 >Work in progress. Access the full challenge in [here](CHALLENGE.md).
 
+<br>
+
 ## Things to improve
 
-- Refactor the firebase connection. Due to connectivity issues common in react native apps outside of Expo builds, replacing the firebase library for react-native-firebase could prove an improvement.
+- Refactor the firebase connection. Due to connectivity issues common in react native apps outside of Expo builds, replacing the firebase library for react-native-firebase could prove a major improvement for handling favorites, where the connection usually suffer and hangs.
   
 - Modularization and more modularization! Implement a third context-reducer to contain things such as the favorites handlers, which I didn't quite expect to reuse so much. Either that or set up a redux.
   
-- Work on the albums' visuals. I was actually quite pressed for time due to all the features I wanted to include, so I barely had time to give them the love that they diserve.
+- Work on the albums' visuals. I was hard pressed for time due to all the features I wanted to include, so I barely had any time to give them the love that they diserve.
