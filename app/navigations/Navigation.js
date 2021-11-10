@@ -1,19 +1,26 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Icon} from 'react-native-elements';
+import SplashScreen from 'react-native-splash-screen';
 
 import colors from '../styles/palette';
 import TopAlbumsStack from './TopAlbumsStack';
 import AccountStack from './AccountStack';
 import FavoritesStack from './FavoritesStack';
 import SearchStack from './SearchStack';
+import {StatusBar} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 const Navigation = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor={colors.med3} />
       <Tab.Navigator
         initialRouteName="top-albums-stack"
         screenOptions={({route}) => ({
