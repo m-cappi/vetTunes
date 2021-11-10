@@ -1,5 +1,7 @@
 ### Objective
 
+> Due to privacy concerns, the hiring company's name has been redacted.
+
 ~~redacted~~ is branching into the music business and needs a new React Native app.
 
 ### Brief
