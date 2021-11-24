@@ -44,7 +44,7 @@ const FavoriteAlbum = ({
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: 'Remove',
           onPress: removeFavorite,
         },
       ],

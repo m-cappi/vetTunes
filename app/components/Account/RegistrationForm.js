@@ -20,6 +20,7 @@ const RegistrationForm = ({toastRef}) => {
     firebase.auth
       .createUserWithEmailAndPassword(values.email, values.password)
       .then(() => {
+        setIsLoading(false);
         navigation.navigate('account');
       })
       .catch(() => {

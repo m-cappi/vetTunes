@@ -22,6 +22,7 @@ const LoginForm = ({toastRef}) => {
     firebase.auth
       .signInWithEmailAndPassword(values.email, values.password)
       .then(() => {
+        setIsLoading(false);
         navigation.navigate('account');
       })
       .catch(() => {
